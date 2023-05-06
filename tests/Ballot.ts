@@ -51,5 +51,33 @@ describe("Ballot", function () {
       const voter = await ballotContract.voters(accounts[0].address);
       expect(voter.weight).to.equal(1);
     });
+
+    it("gives voting rights to another account", async () => {
+      const accounts = await ethers.getSigners();
+      const chairperson = await ballotContract.voters(accounts[0].address);
+      const voteTx = await ballotContract.giveRightToVote(accounts[1].address);
+      console.log(voteTx);
+      const voter = await ballotContract.voters(accounts[1].address);
+      expect(voter.weight).to.equal(1);
+    });
+
+    it("delegates voting rights to another account", async () => {
+      const accounts = await ethers.getSigners();
+      const chairperson = await ballotContract.voters(accounts[0].address);
+      const voteTx = await ballotContract.giveRightToVote(accounts[2].address);
+      const delegateVoteTx = await ballotContract.delegate(accounts[2].address);
+      console.log(delegateVoteTx);
+      const delegate = await ballotContract.voters(accounts[2].address);
+      expect(delegate.weight).to.equal(2);
+    });
+
+    it("chairperson can vote", async () => {
+      const chairperson = await ballotContract.chairperson();
+      const accounts = await ethers.getSigners();
+      const votedTx = await ballotContract.vote(0);
+      const winner = await ballotContract.winnerName();
+      expect("Proposal 1").to.equal(ethers.utils.parseBytes32String(winner));
+      //expect(winner).to.equal(ethers.utils.parseBytes32String(PROPOSALS[0]));
+    });
   });
 });

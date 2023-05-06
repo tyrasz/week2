@@ -18,7 +18,13 @@ async function main() {
   );
   const chairperson = await ballotContract.chairperson();
   console.log(`The chairperson is ${chairperson}`);
-  // TODO
+  // TODO give voting rights
+
+  //TODO casting votes
+
+  //TODO delegating votes
+
+  //TODO querying results
 }
 
 //catch errors and exit
