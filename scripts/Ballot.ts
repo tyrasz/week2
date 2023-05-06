@@ -18,13 +18,19 @@ async function main() {
   );
   const chairperson = await ballotContract.chairperson();
   console.log(`The chairperson is ${chairperson}`);
-  // TODO give voting rights
 
-  //TODO casting votes
+  //give voting rights
+  const mooveOutAddress = "0xB418426ba654d400DC259cE1e50EF299846f34Af";
+  const mooveOutTx = await ballotContract.giveRightToVote(mooveOutAddress);
 
-  //TODO delegating votes
+  //chairperson votes
+  const chairpersonVoteTx = await ballotContract.vote(0);
 
-  //TODO querying results
+  //delegating votes
+  const mooveOutDelegateTx = await ballotContract.delegate(mooveOutAddress);
+
+  //querying results
+  const winningProposal = await ballotContract.winningProposal();
 }
 
 //catch errors and exit
