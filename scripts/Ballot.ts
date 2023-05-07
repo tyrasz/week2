@@ -22,15 +22,39 @@ async function main() {
   //give voting rights
   const mooveOutAddress = "0xB418426ba654d400DC259cE1e50EF299846f34Af";
   const mooveOutTx = await ballotContract.giveRightToVote(mooveOutAddress);
+  const mooveOutDelegateTx = await ballotContract.delegate(mooveOutAddress, {
+    gasLimit: 500000, // or some other value
+  });
+  console.log(`Delegated`);
 
-  //chairperson votes
-  const chairpersonVoteTx = await ballotContract.vote(0);
+  const skyyAddress = "0xd60e2f289ff4e54eac21e30c2bdd78c47aa466e7";
+  const skyyGiveVoteTx = await ballotContract.giveRightToVote(skyyAddress);
+
+  const loungAddress = "0x9620daf4fE148e8dCB58745f35BE24AE30503535";
+  const loungGiveVoteTx = await ballotContract.giveRightToVote(loungAddress);
+
+  console.log(`Voting rights all given`);
 
   //delegating votes
-  const mooveOutDelegateTx = await ballotContract.delegate(mooveOutAddress);
+  // const mooveOutDelegateTx = await ballotContract.delegate(mooveOutAddress);
+  const skyyDelegateTx = await ballotContract.delegate(skyyAddress, {
+    gasLimit: 500000, // or some other value
+  });
+  const loungDelegateTx = await ballotContract.delegate(loungAddress, {
+    gasLimit: 500000, // or some other value
+  });
 
-  //querying results
+  console.log(`Votes delegated`);
+
+  // chairperson votes
+  const chairpersonVoteTx = await ballotContract.vote(0, {
+    gasLimit: 500000, // or some other value
+  });
+  console.log(`Voted`);
+
+  // querying results
   const winningProposal = await ballotContract.winningProposal();
+  console.log(`The winning proposal is ${winningProposal}`);
 }
 
 //catch errors and exit

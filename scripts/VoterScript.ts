@@ -7,6 +7,8 @@ async function main() {
   // assumes chairperson has given right to vote
   // voter votes for proposal
   const voteTx = await ballotContract.vote(0);
+
+  console.log(voteTx);
 }
 
 //catch errors and exit
