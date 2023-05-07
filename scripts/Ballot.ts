@@ -1,4 +1,6 @@
 import { ethers } from "hardhat";
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+// import "@nomicfoundation/hardhat-verify";
 
 async function main() {
   const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
@@ -55,6 +57,21 @@ async function main() {
   // querying results
   const winningProposal = await ballotContract.winningProposal();
   console.log(`The winning proposal is ${winningProposal}`);
+
+  //verify the contract
+  async function verifyContract(
+    hre: HardhatRuntimeEnvironment,
+    contractAddress: string,
+    proposals: string[]
+  ) {
+    const proposalBytes = proposals.map(ethers.utils.formatBytes32String);
+    await hre.run("verify:verify", {
+      address: contractAddress,
+      constructorArguments: [proposalBytes],
+    });
+  }
+  const verifyTx = await verifyContract(hre, ballotContract.address, PROPOSALS);
+  console.log(verifyTx);
 }
 
 //catch errors and exit
